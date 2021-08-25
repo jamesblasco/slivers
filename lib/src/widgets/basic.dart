@@ -1,4 +1,3 @@
-// @dart=2.12
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import '../rendering/proxy_box.dart';
@@ -207,7 +206,7 @@ class SliverClipPath extends SingleChildRenderObjectWidget {
 /// A RenderProxyBox subclass that allows you to customize the
 /// hit-testing behavior.
 abstract class RenderProxySliverWithHitTestBehavior extends RenderProxySliver
-    with SliverBoxAdapterHelperMixin {
+    with SliverBoxAdapterMixin {
   /// Initializes member variables for subclasses.
   ///
   /// By default, the [behavior] is [HitTestBehavior.deferToChild].
@@ -287,7 +286,7 @@ class ColoredSliver extends SingleChildRenderObjectWidget {
 }
 
 class _RenderSliverColoredBox extends RenderProxySliverWithHitTestBehavior
-    with SliverBoxAdapterHelperMixin {
+    with SliverBoxAdapterMixin {
   _RenderSliverColoredBox({required Color color})
       : _color = color,
         super(behavior: HitTestBehavior.opaque);

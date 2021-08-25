@@ -1,4 +1,3 @@
-// @dart=2.12
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:slivers/src/rendering/proxy_box.dart';

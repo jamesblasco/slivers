@@ -1,4 +1,9 @@
-// @dart=2.12
+
+// Copyright 2019 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+// PR: https://github.com/flutter/flutter/pull/33138/files
+
 
 import 'dart:math' as math;
 

@@ -1,6 +1,3 @@
-
-//@dart=2.12
-
 import 'package:flutter/widgets.dart';
 import '../rendering/group.dart';
 

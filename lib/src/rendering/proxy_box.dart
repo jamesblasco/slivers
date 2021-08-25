@@ -1,10 +1,8 @@
-// @dart=2.12
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:ui' as ui;
 
-
-mixin SliverBoxAdapterHelperMixin on RenderSliver {
+mixin SliverBoxAdapterMixin on RenderProxySliver {
   Size get size {
     assert(hasSize, 'RenderSliver was not laid out: ${toString()}');
     final SliverGeometry? geometry = this.geometry;
@@ -24,8 +22,10 @@ mixin SliverBoxAdapterHelperMixin on RenderSliver {
 
   bool get hasSize => geometry != null;
 
-  Offset computeDirectionalOffset(
-      {required double mainAxisPosition, required double crossAxisPosition}) {
+  Offset computeDirectionalOffset({
+    required double mainAxisPosition,
+    required double crossAxisPosition,
+  }) {
     switch (constraints.axis) {
       case Axis.horizontal:
         return Offset(mainAxisPosition, crossAxisPosition);
@@ -36,7 +36,7 @@ mixin SliverBoxAdapterHelperMixin on RenderSliver {
 }
 
 abstract class _RenderCustomClip<T> extends RenderProxySliver
-    with SliverBoxAdapterHelperMixin {
+    with SliverBoxAdapterMixin {
   _RenderCustomClip({
     RenderSliver? child,
     CustomClipper<T>? clipper,
@@ -187,9 +187,11 @@ class RenderSliverClipRect extends _RenderCustomClip<Rect> {
       assert(_clip != null);
       if (!_clip!.contains(position)) return false;
     }
-    return super.hitTest(result,
-        mainAxisPosition: mainAxisPosition,
-        crossAxisPosition: crossAxisPosition);
+    return super.hitTest(
+      result,
+      mainAxisPosition: mainAxisPosition,
+      crossAxisPosition: crossAxisPosition,
+    );
   }
 
   @override
@@ -339,7 +341,7 @@ class RenderSliverClipRRect extends _RenderCustomClip<RRect> {
 ///  * To clip to an oval or circle, consider [RenderClipOval].
 ///  * To clip to a rounded rectangle, consider [RenderClipRRect].
 class RenderSliverClipPath extends _RenderCustomClip<Path>
-    with SliverBoxAdapterHelperMixin {
+    with SliverBoxAdapterMixin {
   /// Creates a path clip.
   ///
   /// If [clipper] is null, the clip will be a rectangle that matches the layout
@@ -406,10 +408,8 @@ class RenderSliverClipPath extends _RenderCustomClip<Path>
   }
 }
 
-
-
 class RenderDecoratedSliver extends RenderProxySliver
-    with SliverBoxAdapterHelperMixin {
+    with SliverBoxAdapterMixin {
   /// Creates a decorated box.
   ///
   /// The [decoration], [position], and [configuration] arguments must not be
@@ -487,7 +487,6 @@ class RenderDecoratedSliver extends RenderProxySliver
   @override
   bool hitTestSelf(
       {required double mainAxisPosition, required double crossAxisPosition}) {
-   
     final position = computeDirectionalOffset(
         mainAxisPosition: mainAxisPosition,
         crossAxisPosition: crossAxisPosition);
@@ -545,4 +544,45 @@ class RenderDecoratedSliver extends RenderProxySliver
     properties.add(DiagnosticsProperty<ImageConfiguration>(
         'configuration', configuration));
   }
+}
+
+
+
+class RenderSizedSliver extends RenderProxySliver {
+  /// Creates a decorated box.
+  ///
+  /// The [decoration], [position], and [configuration] arguments must not be
+  /// null. By default the decoration paints behind the child.
+  ///
+  /// The [ImageConfiguration] will be passed to the decoration (with the size
+  /// filled in) to let it resolve images.
+  RenderSizedSliver({
+    required double extent,
+    RenderSliver? child,
+  })  : _extent = extent,
+        super(child);
+
+  /// Extent for
+  ///
+  /// Commonly a [BoxDecoration].
+  double get extent => _extent;
+  double _extent;
+  set decoration(Decoration value) {
+    assert(value != null);
+    if (value == _extent) return;
+    
+    _extent = extent;
+    markNeedsLayout();
+  }
+
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    
+    properties.add(DiagnosticsProperty<double>(
+        'extent', extent));
+  }
+
+  
 }
