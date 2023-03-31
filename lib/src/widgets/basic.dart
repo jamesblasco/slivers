@@ -14,8 +14,7 @@ class SliverClipRect extends SingleChildRenderObjectWidget {
       this.clipper,
       this.clipBehavior = Clip.hardEdge,
       Widget? child})
-      : assert(clipBehavior != null),
-        super(key: key, child: child);
+      : super(key: key, child: child);
 
   /// If non-null, determines which clip to use.
   final CustomClipper<Rect>? clipper;
@@ -69,7 +68,6 @@ class SliverClipRRect extends SingleChildRenderObjectWidget {
     this.clipBehavior = Clip.antiAlias,
     Widget? child,
   })  : assert(borderRadius != null || clipper != null),
-        assert(clipBehavior != null),
         super(key: key, child: child);
 
   /// The border radius of the rounded corners.
@@ -132,8 +130,7 @@ class SliverClipPath extends SingleChildRenderObjectWidget {
     this.clipper,
     this.clipBehavior = Clip.antiAlias,
     Widget? sliver,
-  })  : assert(clipBehavior != null),
-        super(key: key, child: sliver);
+  }) : super(key: key, child: sliver);
 
   /// Creates a shape clip.
   ///
@@ -145,9 +142,7 @@ class SliverClipPath extends SingleChildRenderObjectWidget {
     Clip clipBehavior = Clip.antiAlias,
     Widget? sliver,
   }) {
-    assert(clipBehavior != null);
     assert(clipBehavior != Clip.none);
-    assert(shape != null);
     return Builder(
       key: key,
       builder: (BuildContext context) {
@@ -261,8 +256,7 @@ class ColoredSliver extends SingleChildRenderObjectWidget {
   ///
   /// The [color] parameter must not be null.
   const ColoredSliver({required this.color, Widget? child, Key? key})
-      : assert(color != null),
-        super(key: key, child: child);
+      : super(key: key, child: child);
 
   /// The color to paint the background area with.
   final Color color;
@@ -297,7 +291,6 @@ class _RenderSliverColoredBox extends RenderProxySliverWithHitTestBehavior
   Color get color => _color;
   Color _color;
   set color(Color value) {
-    assert(value != null);
     if (value == _color) {
       return;
     }

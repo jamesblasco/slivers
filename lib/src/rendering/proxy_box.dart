@@ -41,8 +41,7 @@ abstract class _RenderCustomClip<T> extends RenderProxySliver
     RenderSliver? child,
     CustomClipper<T>? clipper,
     Clip clipBehavior = Clip.antiAlias,
-  })  : assert(clipBehavior != null),
-        _clipper = clipper,
+  })  : _clipper = clipper,
         _clipBehavior = clipBehavior,
         super(child);
 
@@ -166,8 +165,7 @@ class RenderSliverClipRect extends _RenderCustomClip<Rect> {
     RenderSliver? child,
     CustomClipper<Rect>? clipper,
     Clip clipBehavior = Clip.antiAlias,
-  })  : assert(clipBehavior != null),
-        assert(clipBehavior != Clip.none),
+  })  : assert(clipBehavior != Clip.none),
         super(child: child, clipper: clipper, clipBehavior: clipBehavior);
 
   @override
@@ -247,15 +245,9 @@ class RenderSliverClipRRect extends _RenderCustomClip<RRect> {
     BorderRadius borderRadius = BorderRadius.zero,
     CustomClipper<RRect>? clipper,
     Clip clipBehavior = Clip.antiAlias,
-  })  : assert(clipBehavior != null),
-        assert(clipBehavior != Clip.none),
+  })  : assert(clipBehavior != Clip.none),
         _borderRadius = borderRadius,
-        super(child: child, clipper: clipper, clipBehavior: clipBehavior) {
-    // `_borderRadius` has a non-nullable return type, but might be null when
-    // running with weak checking, so we need to null check it anyway (and
-    // ignore the warning that the null-handling logic is dead code).
-    assert(_borderRadius != null || clipper != null); // ignore: dead_code
-  }
+        super(child: child, clipper: clipper, clipBehavior: clipBehavior);
 
   /// The border radius of the rounded corners.
   ///
@@ -266,7 +258,6 @@ class RenderSliverClipRRect extends _RenderCustomClip<RRect> {
   BorderRadius get borderRadius => _borderRadius;
   BorderRadius _borderRadius;
   set borderRadius(BorderRadius value) {
-    assert(value != null);
     if (_borderRadius == value) return;
     _borderRadius = value;
     _markNeedsClip();
@@ -422,10 +413,7 @@ class RenderDecoratedSliver extends RenderProxySliver
     DecorationPosition position = DecorationPosition.background,
     ImageConfiguration configuration = ImageConfiguration.empty,
     RenderSliver? child,
-  })  : assert(decoration != null),
-        assert(position != null),
-        assert(configuration != null),
-        _decoration = decoration,
+  })  : _decoration = decoration,
         _position = position,
         _configuration = configuration,
         super(child);
@@ -546,8 +534,6 @@ class RenderDecoratedSliver extends RenderProxySliver
   }
 }
 
-
-
 class RenderSizedSliver extends RenderProxySliver {
   /// Creates a decorated box.
   ///
@@ -570,19 +556,15 @@ class RenderSizedSliver extends RenderProxySliver {
   set decoration(Decoration value) {
     assert(value != null);
     if (value == _extent) return;
-    
+
     _extent = extent;
     markNeedsLayout();
   }
 
-
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    
-    properties.add(DiagnosticsProperty<double>(
-        'extent', extent));
-  }
 
-  
+    properties.add(DiagnosticsProperty<double>('extent', extent));
+  }
 }
