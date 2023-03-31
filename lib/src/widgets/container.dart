@@ -4,7 +4,6 @@ import 'package:slivers/src/rendering/proxy_box.dart';
 
 import 'basic.dart';
 
-
 class SliverContainer extends StatelessWidget {
   /// Creates a widget that combines common painting, positioning, and sizing widgets.
   ///
@@ -26,7 +25,6 @@ class SliverContainer extends StatelessWidget {
   })  : assert(margin == null || margin.isNonNegative),
         assert(padding == null || padding.isNonNegative),
         assert(decoration == null || decoration.debugAssertIsValid()),
-        assert(clipBehavior != null),
         assert(decoration != null || clipBehavior == Clip.none),
         assert(
             color == null || decoration == null,
@@ -97,7 +95,6 @@ class SliverContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? current = sliver;
 
-
     final EdgeInsetsGeometry? effectivePadding = _paddingIncludingDecoration;
     if (effectivePadding != null)
       current = SliverPadding(padding: effectivePadding, sliver: current);
@@ -127,9 +124,10 @@ class SliverContainer extends StatelessWidget {
       );
     }
 
-    if (margin != null) current = SliverPadding(padding: margin!, sliver: current);
+    if (margin != null)
+      current = SliverPadding(padding: margin!, sliver: current);
 
-  /*   if (transform != null)
+    /*   if (transform != null)
       current = Transform(
           transform: transform!, child: current, alignment: transformAlignment); */
 
@@ -139,7 +137,7 @@ class SliverContainer extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-   
+
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
         defaultValue: null));
     properties.add(DiagnosticsProperty<Clip>('clipBehavior', clipBehavior,
@@ -159,8 +157,7 @@ class SliverContainer extends StatelessWidget {
 /// A clipper that uses [Decoration.getClipPath] to clip.
 class _DecorationClipper extends CustomClipper<Path> {
   _DecorationClipper({TextDirection? textDirection, required this.decoration})
-      : assert(decoration != null),
-        textDirection = textDirection ?? TextDirection.ltr;
+      : textDirection = textDirection ?? TextDirection.ltr;
 
   final TextDirection textDirection;
   final Decoration decoration;
@@ -177,7 +174,6 @@ class _DecorationClipper extends CustomClipper<Path> {
   }
 }
 
-
 class DecoratedSliver extends SingleChildRenderObjectWidget {
   /// Creates a widget that paints a [Decoration].
   ///
@@ -188,9 +184,7 @@ class DecoratedSliver extends SingleChildRenderObjectWidget {
     required this.decoration,
     this.position = DecorationPosition.background,
     Widget? sliver,
-  })  : assert(decoration != null),
-        assert(position != null),
-        super(key: key, child: sliver);
+  }) : super(key: key, child: sliver);
 
   /// What decoration to paint.
   ///
